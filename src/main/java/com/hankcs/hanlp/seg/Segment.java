@@ -312,6 +312,8 @@ public abstract class Segment
                     pre.attribute = new CoreDictionary.Attribute(Nature.mq);
                     pre.wordID = -1;    // -1代表NGram模型中的“万能词”，保证二次维特比得分一定更高
                     iterator.remove();
+                    // 确定cur指向不符合数据规则的第一个节点
+                    cur = iterator.next();
                 }
                 if (sbQuantifier.length() != pre.realWord.length())
                 {
@@ -319,6 +321,12 @@ public abstract class Segment
                     pre.word = Predefine.TAG_NUMBER;
                     pre.wordID = CoreDictionary.M_WORD_ID;
                     cur.from = null;    // 在修改了节点之后,将后向节点清空
+                    /**
+                     *  由于remove节点,需要对后面节点进行from修正
+                     */
+                    cur.from = null;
+                    cur.updateFrom(pre);
+
                     sbQuantifier.setLength(0);
                 }
             }
