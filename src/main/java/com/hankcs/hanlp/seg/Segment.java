@@ -139,6 +139,7 @@ public abstract class Segment
      * @param end
      * @return
      */
+    @Deprecated
     protected static List<AtomNode> simpleAtomSegment(char[] charArray, int start, int end)
     {
         List<AtomNode> atomNodeList = new LinkedList<AtomNode>();
@@ -320,7 +321,6 @@ public abstract class Segment
                     pre.realWord = sbQuantifier.toString();
                     pre.word = Predefine.TAG_NUMBER;
                     pre.wordID = CoreDictionary.M_WORD_ID;
-                    cur.from = null;    // 在修改了节点之后,将后向节点清空
                     /**
                      *  由于remove节点,需要对后面节点进行from修正
                      */
