@@ -139,6 +139,7 @@ public abstract class Segment
      * @param end
      * @return
      */
+    @Deprecated
     protected static List<AtomNode> simpleAtomSegment(char[] charArray, int start, int end)
     {
         List<AtomNode> atomNodeList = new LinkedList<AtomNode>();
@@ -316,6 +317,7 @@ public abstract class Segment
                     }
                     sbQuantifier.append(cur.realWord);
                     iterator.remove();
+
                     // 将其从wordNet中删除
                     for (Vertex vertex : wordNetAll.getVertexes()[line + sbQuantifier.length()])
                     {
