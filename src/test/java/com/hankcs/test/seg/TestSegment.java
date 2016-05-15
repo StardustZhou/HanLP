@@ -207,6 +207,22 @@ public class TestSegment extends TestCase
         System.out.println(termList);
     }
 
+    public void testIssue199() throws Exception
+    {
+        Segment segment = new CRFSegment();
+        segment.enableCustomDictionary(false);// 开启自定义词典
+        segment.enablePartOfSpeechTagging(true);
+        List<Term> termList = segment.seg("更多采购");
+        System.out.println(termList);
+        for (Term term : termList)
+        {
+            if (term.nature == null)
+            {
+                System.out.println("识别到新词：" + term.word);
+            }
+        }
+    }
+
     public void testMultiThreading() throws Exception
     {
         Segment segment = BasicTokenizer.SEGMENT;
@@ -303,8 +319,15 @@ public class TestSegment extends TestCase
     public void testIssue193() throws Exception
     {
         String[] testCase = new String[] {
-                "以每台约200元的价格送到苹果售后维修中心换新机（苹果的保修基本是免费换新机）" ,
-                "可能以2500~2800元的价格回收"
+                "以每台约200元的价格送到苹果售后维修中心换新机（苹果的保修基本是免费换新机）",
+                "可能以2500~2800元的价格回收",
+                "3700个益农信息社打通服务“最后一公里”",
+                "一位李先生给高政留言说上周五可以帮忙献血",
+                "一位浩宁达高层透露",
+                "五和万科长阳天地5个普宅项目",
+                "以1974点低点和5178点高点作江恩角度线",
+                "纳入统计的18家京系基金公司",
+                "华夏基金与嘉实基金两家京系基金公司"
         };
         Segment segment = HanLP.newSegment().enableOrganizationRecognize(true).enableNumberQuantifierRecognize(true);
         for (String sentence : testCase) {
