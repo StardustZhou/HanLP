@@ -26,23 +26,20 @@ import java.util.List;
 /**
  * @author hankcs
  */
-public class TestCharType extends TestCase
-{
+public class testCharType extends TestCase {
     /**
      * 制作字符类型表
+     *
      * @throws Exception
      */
-    public void testMakeCharType() throws Exception
-    {
+    public void testMakeCharType() throws Exception {
         int preType = 5;
         int preChar = 0;
         List<int[]> typeList = new LinkedList<int[]>();
-        for (int i = 0; i <= Character.MAX_VALUE; ++i)
-        {
+        for (int i = 0; i <= Character.MAX_VALUE; ++i) {
             int type = TextUtility.charType((char) i);
 //            System.out.printf("%d %d\n", i, TextUtility.charType((char) i));
-            if (type != preType)
-            {
+            if (type != preType) {
                 int[] array = new int[3];
                 array[0] = preChar;
                 array[1] = i - 1;
@@ -62,8 +59,7 @@ public class TestCharType extends TestCase
         }
         System.out.print("int[" + typeList.size() + "][3] array = \n");
         DataOutputStream out = new DataOutputStream(new FileOutputStream(HanLP.Config.CharTypePath));
-        for (int[] array : typeList)
-        {
+        for (int[] array : typeList) {
             System.out.printf("%d %d %d\n", array[0], array[1], array[2]);
             out.writeChar(array[0]);
             out.writeChar(array[1]);
@@ -72,14 +68,12 @@ public class TestCharType extends TestCase
         out.close();
         ByteArray byteArray = ByteArray.createByteArray(HanLP.Config.CharTypePath);
         Iterator<int[]> iterator = typeList.iterator();
-        while (byteArray.hasMore())
-        {
+        while (byteArray.hasMore()) {
             int b = byteArray.nextChar();
             int e = byteArray.nextChar();
             byte t = byteArray.nextByte();
             int[] array = iterator.next();
-            if (b != array[0] || e != array[1] || t != array[2])
-            {
+            if (b != array[0] || e != array[1] || t != array[2]) {
                 System.out.printf("%d %d %d\n", b, e, t);
             }
         }
@@ -87,33 +81,29 @@ public class TestCharType extends TestCase
 
     /**
      * 测试字符类型表
+     *
      * @throws Exception
      */
-    public void testGet() throws Exception
-    {
+    public void testGet() throws Exception {
 //        for (int i = 0; i < Character.MAX_VALUE; ++i)
 //        {
 //            System.out.printf("%d %d %d\n", i, TextUtility.charType((char) i) , (int)CharType.get((char) i));
 //        }
-        for (int i = 0; i <= Character.MAX_VALUE; ++i)
-        {
-            assertEquals(TextUtility.charType((char) i) , (int)CharType.get((char) i));
+        for (int i = 0; i <= Character.MAX_VALUE; ++i) {
+            assertEquals(TextUtility.charType((char) i), (int) CharType.get((char) i));
         }
     }
 
-    public void testNumber() throws Exception
-    {
-        for (int i = 0; i <= Character.MAX_VALUE; ++i)
-        {
+    public void testNumber() throws Exception {
+        for (int i = 0; i <= Character.MAX_VALUE; ++i) {
             if (CharType.get((char) i) == CharType.CT_NUM)
-                System.out.println((char)i);
+                System.out.println((char) i);
         }
         assertEquals(CharType.CT_NUM, CharType.get('1'));
 
     }
 
-    public void testWhiteSpace() throws Exception
-    {
+    public void testWhiteSpace() throws Exception {
 //        CharType.type[' '] = CharType.CT_OTHER;
         String text = "1 + 2 = 3; a+b= a + b";
         System.out.println(HanLP.segment(text));
