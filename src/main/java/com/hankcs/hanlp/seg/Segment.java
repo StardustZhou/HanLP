@@ -209,44 +209,41 @@ public abstract class Segment {
             }
         }
         // BinTrie合并
-        if (CustomDictionary.trie != null) {
-            for (int i = 0; i < wordNet.length; ++i) {
-                if (wordNet[i] == null) continue;
-                BaseNode<CoreDictionary.Attribute> state = CustomDictionary.trie.transition(wordNet[i].realWord.toCharArray(), 0);
-                if (state != null) {
-                    int start = i;
-                    int to = i + 1;
-                    int end = to;
-                    CoreDictionary.Attribute value = state.getValue();
-                    boolean needPassed = false;
-                    for (; to < wordNet.length; ++to) {
-                        if (wordNet[to] == null) continue;
-                        state = state.transition(wordNet[to].realWord.toCharArray(), 0);
-//                        if (state == null) break;
+        if (CustomDictionary.trie != null) for (int i = 0; i < wordNet.length; ++i) {
+            if (wordNet[i] == null) continue;
+            BaseNode<CoreDictionary.Attribute> state = CustomDictionary.trie.transition(wordNet[i].realWord.toCharArray(), 0);
+            if (state != null) {
+                int start = i;
+                int to = i + 1;
+                int end = to;
+                CoreDictionary.Attribute value = state.getValue();
+                boolean needPassed = false;
+                for (; to < wordNet.length; ++to) {
+                    if (wordNet[to] == null) continue;
+                    state = state.transition(wordNet[to].realWord.toCharArray(), 0);
 
-                        if (state == null || state.getStatus() == BaseNode.Status.UNDEFINED_0) break;
+                    if (state == null || state.getStatus() == BaseNode.Status.UNDEFINED_0) break;
 
-                        if (state.getStatus() == BaseNode.Status.NOT_WORD_1) {
-                            needPassed = true;
-                        } else {
-                            needPassed = false;
-                        }
-
-                        if (state.getValue() != null) {
-                            value = state.getValue();
-                            end = to + 1;
-                        }
+                    if (state.getStatus() == BaseNode.Status.NOT_WORD_1) {
+                        needPassed = true;
+                    } else {
+                        needPassed = false;
                     }
-                    if (!needPassed && value != null) {
-                        StringBuilder sbTerm = new StringBuilder();
-                        for (int j = start; j < end; ++j) {
-                            if (wordNet[j] == null) continue;
-                            sbTerm.append(wordNet[j]);
-                            wordNet[j] = null;
-                        }
-                        wordNet[i] = new Vertex(sbTerm.toString(), value);
-                        i = end - 1;
+
+                    if (state.getValue() != null) {
+                        value = state.getValue();
+                        end = to + 1;
                     }
+                }
+                if (!needPassed && value != null) {
+                    StringBuilder sbTerm = new StringBuilder();
+                    for (int j = start; j < end; ++j) {
+                        if (wordNet[j] == null) continue;
+                        sbTerm.append(wordNet[j]);
+                        wordNet[j] = null;
+                    }
+                    wordNet[i] = new Vertex(sbTerm.toString(), value);
+                    i = end - 1;
                 }
             }
         }
@@ -278,29 +275,16 @@ public abstract class Segment {
                     iterator.remove();
                     removeFromWordNet(cur, wordNetAll, line, sbQuantifier.length());
                 }
-<<<<<<< HEAD
-                if (cur != null &&
-                        (cur.hasNature(Nature.q) || cur.hasNature(Nature.qv) || cur.hasNature(Nature.qt))
-                        ) {
-                    if (config.indexMode) {
-                        wordNetAll.add(line, new Vertex(sbQuantifier.toString(), new CoreDictionary.Attribute(Nature.m)));
-=======
-                if (cur != null)
-                {
-                    if ((cur.hasNature(Nature.q) || cur.hasNature(Nature.qv) || cur.hasNature(Nature.qt)))
-                    {
-                        if (config.indexMode)
-                        {
+                if (cur != null) {
+                    if ((cur.hasNature(Nature.q) || cur.hasNature(Nature.qv) || cur.hasNature(Nature.qt))) {
+                        if (config.indexMode) {
                             wordNetAll.add(line, new Vertex(sbQuantifier.toString(), new CoreDictionary.Attribute(Nature.m)));
                         }
                         sbQuantifier.append(cur.realWord);
                         iterator.remove();
                         removeFromWordNet(cur, wordNetAll, line, sbQuantifier.length());
-                    }
-                    else
-                    {
+                    } else {
                         line += cur.realWord.length();   // (cur = iterator.next()).hasNature(Nature.m) 最后一个next可能不含q词性
->>>>>>> 84bb184185b31c87daf69ffdf9de48e54e1a52ce
                     }
                 }
                 if (sbQuantifier.length() != pre.realWord.length()) {
@@ -309,12 +293,7 @@ public abstract class Segment {
                     pre.attribute = new CoreDictionary.Attribute(Nature.mq);
                     pre.wordID = CoreDictionary.M_WORD_ID;
                     sbQuantifier.setLength(0);
-<<<<<<< HEAD
-                } else if (cur != null)
-                    line += cur.realWord.length();
-=======
                 }
->>>>>>> 84bb184185b31c87daf69ffdf9de48e54e1a52ce
             }
             sbQuantifier.setLength(0);
             line += pre.realWord.length();
