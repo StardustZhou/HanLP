@@ -158,6 +158,12 @@ public abstract class Segment {
                         if (curType != CharType.CT_NUM) break;
                     }
                 }
+
+                // 百分数识别
+                if (charArray[offsetAtom] == '%' && preType == CharType.CT_NUM) {
+                    ++offsetAtom;
+                }
+
                 atomNodeList.add(new AtomNode(new String(charArray, start, offsetAtom - start), preType));
                 start = offsetAtom;
             }
