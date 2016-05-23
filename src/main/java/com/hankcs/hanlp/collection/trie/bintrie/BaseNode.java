@@ -15,6 +15,8 @@ import com.hankcs.hanlp.corpus.io.ByteArray;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Set;
@@ -158,7 +160,30 @@ public abstract class BaseNode<V> implements Comparable<BaseNode> {
         }
     }
 
+<<<<<<< HEAD
     protected void walkToLoad(ByteArray byteArray, _ValueArray<V> valueArray) {
+=======
+    protected void walkToSave(ObjectOutput out) throws IOException
+    {
+        out.writeChar(c);
+        out.writeInt(status.ordinal());
+        if (status == Status.WORD_END_3 || status == Status.WORD_MIDDLE_2)
+        {
+            out.writeObject(value);
+        }
+        int childSize = 0;
+        if (child != null) childSize = child.length;
+        out.writeInt(childSize);
+        if (child == null) return;
+        for (BaseNode node : child)
+        {
+            node.walkToSave(out);
+        }
+    }
+
+    protected void walkToLoad(ByteArray byteArray, _ValueArray<V> valueArray)
+    {
+>>>>>>> 84bb184185b31c87daf69ffdf9de48e54e1a52ce
         c = byteArray.nextChar();
         status = ARRAY_STATUS[byteArray.nextInt()];
         if (status == Status.WORD_END_3 || status == Status.WORD_MIDDLE_2) {
@@ -172,7 +197,29 @@ public abstract class BaseNode<V> implements Comparable<BaseNode> {
         }
     }
 
+<<<<<<< HEAD
     public enum Status {
+=======
+    protected void walkToLoad(ObjectInput byteArray) throws IOException, ClassNotFoundException
+    {
+        c = byteArray.readChar();
+        status = ARRAY_STATUS[byteArray.readInt()];
+        if (status == Status.WORD_END_3 || status == Status.WORD_MIDDLE_2)
+        {
+            value = (V) byteArray.readObject();
+        }
+        int childSize = byteArray.readInt();
+        child = new BaseNode[childSize];
+        for (int i = 0; i < childSize; ++i)
+        {
+            child[i] = new Node<V>();
+            child[i].walkToLoad(byteArray);
+        }
+    }
+
+    public enum Status
+    {
+>>>>>>> 84bb184185b31c87daf69ffdf9de48e54e1a52ce
         /**
          * 未指定，用于删除词条
          */

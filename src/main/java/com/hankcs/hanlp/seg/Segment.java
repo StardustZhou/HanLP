@@ -278,15 +278,30 @@ public abstract class Segment {
                     iterator.remove();
                     removeFromWordNet(cur, wordNetAll, line, sbQuantifier.length());
                 }
+<<<<<<< HEAD
                 if (cur != null &&
                         (cur.hasNature(Nature.q) || cur.hasNature(Nature.qv) || cur.hasNature(Nature.qt))
                         ) {
                     if (config.indexMode) {
                         wordNetAll.add(line, new Vertex(sbQuantifier.toString(), new CoreDictionary.Attribute(Nature.m)));
+=======
+                if (cur != null)
+                {
+                    if ((cur.hasNature(Nature.q) || cur.hasNature(Nature.qv) || cur.hasNature(Nature.qt)))
+                    {
+                        if (config.indexMode)
+                        {
+                            wordNetAll.add(line, new Vertex(sbQuantifier.toString(), new CoreDictionary.Attribute(Nature.m)));
+                        }
+                        sbQuantifier.append(cur.realWord);
+                        iterator.remove();
+                        removeFromWordNet(cur, wordNetAll, line, sbQuantifier.length());
                     }
-                    sbQuantifier.append(cur.realWord);
-                    iterator.remove();
-                    removeFromWordNet(cur, wordNetAll, line, sbQuantifier.length());
+                    else
+                    {
+                        line += cur.realWord.length();   // (cur = iterator.next()).hasNature(Nature.m) 最后一个next可能不含q词性
+>>>>>>> 84bb184185b31c87daf69ffdf9de48e54e1a52ce
+                    }
                 }
                 if (sbQuantifier.length() != pre.realWord.length()) {
                     pre.realWord = sbQuantifier.toString();
@@ -294,8 +309,12 @@ public abstract class Segment {
                     pre.attribute = new CoreDictionary.Attribute(Nature.mq);
                     pre.wordID = CoreDictionary.M_WORD_ID;
                     sbQuantifier.setLength(0);
+<<<<<<< HEAD
                 } else if (cur != null)
                     line += cur.realWord.length();
+=======
+                }
+>>>>>>> 84bb184185b31c87daf69ffdf9de48e54e1a52ce
             }
             sbQuantifier.setLength(0);
             line += pre.realWord.length();
